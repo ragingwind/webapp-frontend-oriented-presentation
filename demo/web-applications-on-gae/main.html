@@ -1,0 +1,50 @@
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Web Application On GAE - Basic</title>
+	<script src="http://code.jquery.com/jquery-1.7.1.min.js" type="text/javascript" charset="utf-8"></script>
+	<script>
+		$(document).ready(function(){
+			$('#add-user').click(function() {
+				var username = $('#user-name').val();
+				if (username.length > 0) {
+					// post new user to server
+					$.ajax({
+						type: 'POST',
+						url: '/user',
+  						data: 'username=' + username,
+						success: function(xhr){
+							// refresh list
+							$.getJSON('/users', function(data) {
+								var html = '';
+								$(data).each(function(i) {
+									html += ['<li>', data[i].name, ' - ' + data[i].date, '</li>'].join('');
+								});
+								$('#user-list').html(html);
+							});
+						},
+						error: function(xhr){
+							alert(['Error', xhr.status, xhr.statusText].join(' '));
+						}
+					});
+				}
+				else
+					alert('You must input user name');
+  				return false;
+			});
+		})
+	</script>
+</head>
+<body>
+	<h1><a target="" href="web-applications-on-gae.appspot.com">Web Application On GAE - Basic</a></h1>
+	<p>
+		<h2>Add user</h2>
+		<div><input id="user-name" name="username" /><input type="submit" id="add-user" value="Add user"></div>
+	</p>
+	<p>
+		<h2>User list</h2>
+		<ul id="user-list">
+		</ul>
+	</p>
+</body>
+</html>

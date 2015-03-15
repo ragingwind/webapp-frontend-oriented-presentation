@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+	<title>raw-simple</title>
+	<style type="text/css" media="screen">
+		#profile-window {
+			border-radius: 10px;
+			border:1px solid black;
+			width:400px;
+		}
+		
+		.profile-photo {
+			width: 96px;
+			height: 96px;
+			border-radius: 6px;
+			border: 1px solid rgba(0, 0, 0, .1);
+		}
+		
+		.left-column {
+			float:left;
+			width:96px;
+			margin-left:10px;
+		}
+
+		.right-column {
+			margin-left:126px;
+		}
+		
+		.thumbnails ul {
+			background:white;
+			list-style: none;
+			margin:0;
+			margin-left:10px;
+			padding:0;
+			border-radius: 12px;
+		}
+		
+		.thumbnails ul > li {
+			display:inline;
+		}
+		
+		.thumbnail {
+			width: 48px;
+			height: 48px;
+			border-radius: 6px;
+			border: 1px solid rgba(0, 0, 0, .1);
+		}
+		
+	</style>
+	
+	<script type="text/javascript" charset="utf-8">
+	
+	var bootstrap = function() {
+		var thumbnails = document.querySelectorAll(".thumbnails ul > li");
+		var profile_photo = document.getElementById("profile-photo");
+		for (var i = 0; i < thumbnails.length; ++i) {
+			thumbnails[i].onclick = function(e) {
+				var src_photo = e.srcElement.src;
+				e.srcElement.src = profile_photo.src;
+				profile_photo.src = src_photo;
+			};
+		}
+		
+		var form = document.forms["profile-form"];
+		form.onsubmit = function() {
+			var name = form["name"].value;
+			var age = form["age"].value;
+			alert(["Your name is ", name, ", Age is ", age].join(""));
+			return false; // prevent page reload.
+		}
+	}
+	
+	window.onload = bootstrap;
+	
+	</script>
+</head>
+<body>
+	<div id="profile-window">
+		<div id="profiles">
+			<div class="left-column">
+				<img id="profile-photo" class="profile-photo" src="profile.jpg" alt="profile image">
+			</div>
+			<div class="right-column">
+				<form name="profile-form">
+					<p><sub class="label">name</sub><input name="name" value=""></p>
+					<p><sub class="label">age</sub><input name="age" value=""></p>
+					<p><input type="submit" value="submit"></p>
+				</form>
+			</div>
+		</div>
+		<div class="thumbnails">
+			<ul>
+				<li><img class="thumbnail" src="cup-1.jpg"></li>
+				<li><img class="thumbnail" src="cup-2.jpg"></li>
+				<li><img class="thumbnail" src="cup-3.jpg"></li>
+				<li><img class="thumbnail" src="cup-4.jpg"></li>
+			</ul>
+		</div>
+	</div>
+</body>
+</html>

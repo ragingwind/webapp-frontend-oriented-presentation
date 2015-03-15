@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+	<title>Using library - Simple Example - RAW</title>
+	<link rel="stylesheet" href="screen.css" type="text/css" media="screen" charset="utf-8">
+	<script src="http://code.jquery.com/jquery-1.7.1.min.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript" charset="utf-8">
+		var bootstrap = function() {
+			// bind click event to thumbnails
+			var $profile_photo = $("#profile-photo");
+			$(".thumbnail").click(function(e) {
+				var src_photo = $(e.target).attr("src");
+				$(e.target).attr("src", $profile_photo.attr("src"));
+				$profile_photo.attr("src", src_photo);
+			});
+			
+			$("#profile-form").submit(function() {
+				var name = $("input:first").val();
+				var age = $("input:last").val();
+				var message = "Not valid value";
+				if (name.length > 0 && age.length > 0) {
+					message = ["Your name is ", name, ", Age is ", age].join("");
+				}
+				$("span").text(message).show().fadeOut(1500);
+				return false; // prevent page-reload
+			});
+			
+		}
+		
+		$(document).ready(bootstrap);
+		
+	</script>
+</head>
+<body>
+	<div id="profile-window">
+		<div class="profiles">
+			<div class="left-column">
+				<img id="profile-photo" class="profile-photo" src="profile.jpg" alt="profile image">
+			</div>
+			<div class="right-column" id="profile-image">
+				<form id="profile-form">
+					<p><sub class="label">name</sub><input name="name" value=""></p>
+					<p><sub class="label">age</sub><input name="age" value=""></p>
+					<p><input type="submit" value="Submit"></p>
+				</form>
+				<span></span>
+			</div>
+		</div>
+		<div class="thumbnails">
+			<ul>
+				<li><img class="thumbnail" src="cup-1.jpg"></li>
+				<li><img class="thumbnail" src="cup-2.jpg"></li>
+				<li><img class="thumbnail" src="cup-3.jpg"></li>
+				<li><img class="thumbnail" src="cup-4.jpg"></li>
+			</ul>
+		</div>
+	</div>
+</body>
+</html>

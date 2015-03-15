@@ -1,0 +1,53 @@
+<!DOCTYPE html> 
+<html> 
+	<head> 
+	<title>Twitter simple reader - JQM</title> 
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1"> 
+	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.0/jquery.mobile-1.0.min.css" />
+	<script type="text/javascript" src="http://code.jquery.com/jquery-1.6.4.min.js"></script>
+	<script type="text/javascript" src="http://code.jquery.com/mobile/1.0/jquery.mobile-1.0.min.js"></script>
+</head>
+<style type="text/css" media="screen">
+	.ui-li-thumb {
+		left:5px;
+		top:5px;
+		width:67px;
+	}
+</style>
+<script>
+	$(document).ready(function() {
+		var url = 'https://api.twitter.com/1/statuses/public_timeline.json?count=10&include_entities=true&callback=?';
+		$.getJSON(url, function(data) {
+			console.log(data);
+			var $page = $('#statuses-list'),
+				$content = $page.children(':jqmData(role=content)'),
+				html = '<ul data-role="listview" data-inset="true">'
+
+			$(data).each(function(i) {
+				var imgurl = data[i].user.profile_image_url,
+					screen_name = data[i].user.screen_name,
+					text = data[i].text;
+					html += '<li><img src="' + imgurl + '"><h3>@' + screen_name + "</h3><p>" + text + "</p></li>";
+			});
+			
+			html += "</ul>"
+			$content.html(html);
+			
+			$page.page();
+			$content.find(':jqmData(role=listview)').listview();
+		});			
+	});
+</script>
+<body> 
+
+<div data-role="page" id="statuses-list">
+	<div data-role="header">
+		<h1>Twitter Public Timeline</h1>
+	</div>
+	<div data-role="content">	
+	</div>
+</div>
+
+</body>
+</html>

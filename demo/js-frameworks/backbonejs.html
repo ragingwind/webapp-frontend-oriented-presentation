@@ -1,0 +1,143 @@
+<html>
+<head>
+	<title>Twitter simple reader - backbone.js</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1"> 
+	<script src="http://code.jquery.com/jquery-1.7.1.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="http://underscorejs.org/underscore-min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="http://documentcloud.github.com/backbone/backbone-min.js" type="text/javascript" charset="utf-8"></script>
+	<style type="text/css" media="screen">
+		body {
+ 			background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #333333), color-stop(100%, #222222));
+  			background-image: -webkit-linear-gradient(top, #333333, #222222);			
+			padding:15px;
+		}
+		ul {
+			background:white;
+			list-style: none;
+			margin:0;
+			padding:0;
+			-webkit-border-radius: 12px;
+		}
+		
+		li {
+			padding:5px;
+			border-bottom: 1px solid #E8E8E8;
+		}
+		
+		li:last-child {
+			border-bottom: 0px solid #E8E8E8;
+		}
+				
+		.box {
+			height:54px;
+		}
+		.profile-photo {
+			top: 12px;
+			left: 12px;
+			width: 48px;
+			height: 48px;
+			-webkit-border-radius: 6px;
+			border: 1px solid rgba(0, 0, 0, .1);
+		}
+				
+		.left-column {
+			float:left;
+			width:48px;
+		}
+
+		.right-column {
+			margin-left:58px;
+		}
+		
+	</style>
+	<script>
+	(function(window, undefined) {
+		var TwitterStatusView = Backbone.View.extend({
+			initialize: function() {
+				this.collection.bind("refresh", this.render);
+				this.collection.view = this;
+				this.fetch();
+			},
+			template: {
+				container: '<div class="container"><ul class="list"></ul></div>',
+				item: ['<li>',
+						'<div class="box">',
+							'<div class="left-column">',
+								'<img class="profile-photo" src="<%=profile_image_url%>">',
+							'</div>',
+							'<div class="right-column">',
+								'@<%=screen_name%>: <%=text%>',
+							'</div>',
+						'</div>',
+						'</li>'].join('')
+			},
+			fetch: function() {
+				this.collection.fetch({add: true, error:this.onError, success:this.onSuccess});
+			},
+			onSuccess: function(collection, response) {
+				collection.view.render.call(collection.view);
+				// console.log(this.collection.at(0).toJSON());
+			},
+			onError: function(collection, response) {
+			},
+			render: function() {
+				$(this.el).html(this.template.container);
+				var $list = $(this.el).find(".list");
+				var t = this.template.item;
+				_.each(this.collection.models, function(m, i) {
+					$list.append(_.template(t, m.toJSON()));
+				});
+			}
+		});
+		
+		var Status = Backbone.Model.extend({
+		});
+		
+		var Statuses = Backbone.Collection.extend({
+			parse: function(res) {
+					if (res["error"])
+						throw (res["error"]);
+					
+					var parsedResults = [];
+					for (var i = 0, len = res.length; i < len; ++i) {
+						var result = {
+							profile_image_url: res[i].user.profile_image_url,
+							screen_name: res[i].user.screen_name,
+							text: res[i].text,
+						}
+						parsedResults.push(result);
+					}	
+    				return parsedResults;
+  				},
+				url: 'https://api.twitter.com/1/statuses/public_timeline.json?count=10&include_entities=true&callback=?',
+				model: Status
+			});
+		
+		// Router setting
+		var App = Backbone.Router.extend({
+			initialize: function() {
+				Backbone.history.start({});
+				this.view = new TwitterStatusView({el:'#app', collection:new Statuses});
+			},
+			routes: {
+				"" : "index",
+				"*actions" : "index"
+			},
+			index: function() {
+				
+			},
+		});
+
+		window.App = App;
+	})(window);
+	
+	$(document).ready(function() {
+		window.app = new App();
+	});
+	</script>
+</head>
+<body>
+<div id="app"></div>
+</body>
+</html>

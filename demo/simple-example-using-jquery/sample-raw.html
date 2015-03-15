@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+	<title>Using library - Simple Example - RAW</title>
+	<link rel="stylesheet" href="screen.css" type="text/css" media="screen" charset="utf-8">
+	<script type="text/javascript" charset="utf-8">
+		var bootstrap = function() {
+			// bind click event to thumbnails
+			var thumbnails = document.querySelectorAll(".thumbnail");
+			var profile_photo = document.getElementById("profile-photo");
+			for (var i = 0; i < thumbnails.length; ++i) {
+				thumbnails[i].onclick = function(e) {
+					var src_photo = e.srcElement.src;
+					e.srcElement.src = profile_photo.src;
+					profile_photo.src = src_photo;
+				};
+			}
+			
+			// verification filed value
+			var form = document.forms["profile-form"];
+			form.onsubmit = function() {
+				var name = form["name"].value;
+				var age = form["age"].value;
+				alert(["Your name is ", name, ", Age is ", age].join(""));
+				return false; // prevent page reload.
+			}
+		}
+		
+		window.onload = bootstrap;
+	</script>
+</head>
+<body>
+	<div id="profile-window">
+		<div class="profiles">
+			<div class="left-column">
+				<img id="profile-photo" class="profile-photo" src="profile.jpg" alt="profile image">
+			</div>
+			<div class="right-column" id="profile-image">
+				<form name="profile-form">
+					<p><sub class="label">name</sub><input name="name" value=""></p>
+					<p><sub class="label">age</sub><input name="age" value=""></p>
+					<p><input type="submit" value="Submit"></p>
+				</form>
+			</div>
+		</div>
+		<div class="thumbnails">
+			<ul>
+				<li><img class="thumbnail" src="cup-1.jpg"></li>
+				<li><img class="thumbnail" src="cup-2.jpg"></li>
+				<li><img class="thumbnail" src="cup-3.jpg"></li>
+				<li><img class="thumbnail" src="cup-4.jpg"></li>
+			</ul>
+		</div>
+	</div>
+</body>
+</html>

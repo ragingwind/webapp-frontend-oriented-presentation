@@ -1,0 +1,28 @@
+{
+  "name": "webapp-front-ends-oriented",
+  "description"   : "javascript training guide",
+  "homepage"      : "http://ragingwind.github.com/webapp.cc/traning/webapp-front-ends-oriented/",
+  "keywords"      : [""],
+  "author"        : "jimmy moon <ragingwind@gmail.com>",
+  "repository"    : {"type": "git", "url": "git://github.com/ragingwind/webapp.cc.git"},
+  "main"          : "index.html",
+  "version"       : "0.0.1",
+	"directoris"		: {
+		"css": "css file for impress.js",
+		"demo": {
+			"js-frameworks" : {
+					"backbonejs.html" : "twitter public timeline with backbone.js",
+					"jquerymobile.html" : "twitter with jquerymobile"
+			},
+			"simple-example-using-jquery" : "simple example for using jquery",
+			"web-application-on-gae": "web application on gae"
+		},
+		"images" : "image files",
+		"index.html" : "main file",
+		"js" : "impress.js",
+		"node_module" : "node.js modules",
+		"references.md" : "references",
+		"httpd.js" : "http daemon by node.js",
+		"README.md" : "readme file",
+	}
+}
